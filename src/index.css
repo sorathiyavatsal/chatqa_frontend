@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.progress-indicator.available {
+  opacity: 0;
+}
+
+.progress-indicator {
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  opacity: 1;
+  pointer-events: none;
+  -webkit-transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 436ms;
+  -moz-transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 436ms;
+  transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 436ms;
+  z-index: 9999;
+}
+
+
+.progress-indicator-head {
+  background-color: rgb(252 233 106 / 1);
+  height: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.insp-logo-frame {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  justify-content: center;
+  -webkit-animation: fadein 436ms;
+  -moz-animation: fadein 436ms;
+  animation: fadein 436ms;
+  height: 98%;
+  animation-name: stretch;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-fill-mode: none;
+}
+
+.insp-logo-frame-img {
+  width: 112px;
+  height: 112px;
+  -webkit-align-self: center;
+  -moz-align-self: center;
+  align-self: center;
+  border-radius: 50%;
+}
+
+.progress-indicator .first-indicator,
+.progress-indicator .second-indicator {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: absolute;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  transform-origin: left center;
+  -webkit-transform: scaleX(0);
+  -moz-transform: scaleX(0);
+  transform: scaleX(0);
+}
+
+.progress-indicator .first-indicator {
+  -webkit-animation: first-indicator 2s linear infinite;
+  -moz-animation: first-indicator 2s linear infinite;
+  animation: first-indicator 2s linear infinite;
+}
+
+.progress-indicator .second-indicator {
+  -webkit-animation: second-indicator 2s linear infinite;
+  -moz-animation: second-indicator 2s linear infinite;
+  animation: second-indicator 2s linear infinite;
+}
+
+.progress-indicator .insp-logo {
+  animation: App-logo-spin infinite 20s linear;
+  border-radius: 50%;
+  -webkit-align-self: center;
+  -moz-align-self: center;
+  align-self: center;
+}
+
+
+@keyframes stretch {
+  0% {
+    transform: scale(0.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes first-indicator {
+  0% {
+    transform: translate(0) scaleX(0);
+  }
+
+  25% {
+    transform: translate(0) scaleX(0.5);
+  }
+
+  50% {
+    transform: translate(25%) scaleX(0.75);
+  }
+
+  75% {
+    transform: translate(100%) scaleX(0);
+  }
+
+  100% {
+    transform: translate(100%) scaleX(0);
+  }
+}
+
+@keyframes second-indicator {
+  0% {
+    transform: translate(0) scaleX(0);
+  }
+
+  60% {
+    transform: translate(0) scaleX(0);
+  }
+
+  80% {
+    transform: translate(0) scaleX(0.6);
+  }
+
+  100% {
+    transform: translate(100%) scaleX(0.1);
+  }
+}
+
+#navlinks {
+  animation: translate .5s;
+}
+
+@keyframes translate {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.rdt_Pagination {
+  color: black !important;
+}
+
+/* custom-select */
+.customSelect__control {
+  box-shadow: none !important;
+  padding: 3px !important;
+}
+
+.logo {
+  background: url('../public/assets/images/logo.png');
+  background-size: cover;
+}
+
+.login-image {
+  background: url('https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77701530431.jpg');
+  background-size: cover;
+}
+
+@media(max-width:1520px) {
+  .left-svg {
+    display: none;
+  }
+}
+
+/* small css for the mobile nav close */
+#nav-mobile-btn.close span:first-child {
+  transform: rotate(45deg);
+  top: 4px;
+  position: relative;
+  background: #a0aec0;
+}
+
+#nav-mobile-btn.close span:nth-child(2) {
+  transform: rotate(-45deg);
+  margin-top: 0px;
+  background: #a0aec0;
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #fedc00;
+  border-radius: 10px;
+  background-clip: padding-box;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(252 233 106 / 1);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, .5);
+  background-image: url("../public/assets/images/logo.png");
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-size: 137px 137px;
+  padding: 1px;
+}
+.ring:before {
+  content: '';
+  position: absolute;
+  left: -0.5px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  border: 3px solid #F3F3F3;
+  border-top: 3px solid rgb(252 233 106 / 1);
+  border-right: 3px solid rgb(252 233 106 / 1);
+  border-radius: 50%;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
