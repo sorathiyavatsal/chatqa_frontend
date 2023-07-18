@@ -8,6 +8,10 @@ module.exports = {
       }
     }
   },
+  daisyui: {
+    themes: false,
+    darkTheme: "light", 
+  },
   plugins: [
     require("tailwindcss/plugin"),
     require("daisyui")

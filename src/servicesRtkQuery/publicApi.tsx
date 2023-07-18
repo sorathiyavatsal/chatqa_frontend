@@ -1,16 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setApiError } from '../redux/globalSlice';
-import { getUserRefreshTokenInLocalSorage, getUserTokenInLocalSorage, setUserTokenInLocalSorage } from '../utils/localStorage';
+import { getUserRefreshTokenInLocalStorage, getUserTokenInLocalStorage, setUserTokenInLocalStorage } from '../utils/localStorage';
 import Swal from 'sweetalert2';
-
-let time_zone = (new Date().toString().substring(new Date().toString().indexOf('+') + 0)).slice(0, 5);
-time_zone = time_zone.substring(0, 3) + ':' + time_zone.substring(3);
-
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.REACT_APP_SERVER_API,
     prepareHeaders: (headers) => {
-        headers.set("Authorization", getUserTokenInLocalSorage() ? getUserTokenInLocalSorage() : `Basic ${process.env.REACT_APP_BASE_TOKEN}`);
+        headers.set("Authorization", getUserTokenInLocalStorage() ? getUserTokenInLocalStorage() : `Basic ${process.env.REACT_APP_BASE_TOKEN}`);
         return headers;
     },
 });
@@ -42,17 +38,16 @@ const baseQueryMiddleware = async (args: any, api: any, extraOptions: any) => {
         //generate new access token 
         const refreshResult = await baseQueryForRefreshToken({
             url: '/auth/accessToken', method: 'POST', body: {
-                token: getUserRefreshTokenInLocalSorage(),
+                token: getUserRefreshTokenInLocalStorage(),
             },
         }, api, extraOptions)
 
         //check token result
         if (refreshResult.data) {
             result = await baseQuery(args, api, extraOptions);
-            setUserTokenInLocalSorage(result.data.data)
+            setUserTokenInLocalStorage(result.data.data)
         } else {
             localStorage.clear();
-            window.location.reload();
             return
         }
     }
@@ -87,9 +82,10 @@ export const publicApiSlice = createApi({
             })
         }),
         user: builder.query({
-            query: () => ({
+            query: (payload) => ({
                 url: 'user',
-                method: 'GET'
+                method: 'GET',
+                params: payload
             })
         }),
         addUser: builder.mutation({
@@ -113,10 +109,24 @@ export const publicApiSlice = createApi({
                 params: payload
             })
         }),
+        getUserPlan: builder.query({
+            query: (payload) => ({
+                url: 'userPlan',
+                method: 'GET',
+                params: payload
+            })
+        }),
+        AdduserPlan: builder.mutation({
+            query: (payload) => ({
+                url: 'userPlan',
+                method: 'POST',
+                body: payload
+            })
+        }),
 
     })
 })
 
 export const {
-    useLazyLoginQuery, useLazySignUpQuery, useLazyUserQuery, useAddUserMutation, useUpdateUserMutation,useLazySubscriptionsQuery
+    useLazyLoginQuery, useLazySignUpQuery, useLazyUserQuery, useAddUserMutation, useUpdateUserMutation, useLazySubscriptionsQuery, useAdduserPlanMutation, useLazyGetUserPlanQuery
 } = publicApiSlice

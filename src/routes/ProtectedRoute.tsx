@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<Props> = ({ children }) => {
     if (!isUserHasToken) {
       navigate("/login");
     }
-  }, [isUserHasToken])
+  }, [isUserHasToken, navigate])
 
   return <>
     <Header />

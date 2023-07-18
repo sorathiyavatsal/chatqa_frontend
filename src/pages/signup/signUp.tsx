@@ -1,15 +1,12 @@
 // import axios from "../../config/api";
 import { useEffect, useState } from "react";
 import { setErrorMessage } from '../../redux/globalSlice'
-import { setUserDetailInLocalSorage } from '../../utils/localStorage'
-import { useLazyLoginQuery, useLazySignUpQuery } from '../../servicesRtkQuery/publicApi'
+import { useLazySignUpQuery } from '../../servicesRtkQuery/publicApi'
 import { useDispatch, useSelector } from "react-redux";
-import { UserValidation, loginValidation } from '../../utils/validation';
-import { setloginSignupVar } from '../../redux/loginSignupSlice';
+import { UserValidation } from '../../utils/validation';
 import Error from "../../components/error";
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2";
-import Header from "../../components/header";
 
 interface Data {
     name: string;
@@ -40,8 +37,8 @@ const SignUp = () => {
     const [trigger, result] = useLazySignUpQuery()
     const { isSuccess, isFetching, isError, error } = result
 
-    const [loginTrigger, loginResult] = useLazyLoginQuery()
-    const { isSuccess: isLoginSuccess, isFetching: isLoginFetching } = loginResult
+    // const [loginTrigger, loginResult] = useLazyLoginQuery()
+    // const { isSuccess: isLoginSuccess, isFetching: isLoginFetching } = loginResult
 
     const handleSubmit = (e: any) => {
         const result: any = UserValidation(userData)
@@ -79,25 +76,22 @@ const SignUp = () => {
             })
         }
         if (isSuccess && !isFetching) {
-            loginTrigger({
-                email: userData?.email,
-                password: userData?.password
-            })
+           navigate('/login')
         }
-    }, [isSuccess, isFetching])
+    }, [isSuccess, isFetching, error?.data?.message, isError, navigate])
 
-    useEffect(() => {
-        if (isLoginSuccess && !isLoginFetching) {
-            setUserDetailInLocalSorage(loginResult.data.data)
-            dispatch(setloginSignupVar({
-                isUserHasToken: loginResult.data.results?.token,
-            }))
-            dispatch(setloginSignupVar({
-                isUserHasToken: loginResult.data.results?.token,
-            }))
-            navigate("/")
-        }
-    }, [isSuccess, isLoginFetching])
+    // useEffect(() => {
+    //     if (isLoginSuccess && !isLoginFetching) {
+    //         setUserDetailInLocalStorage(loginResult.data.data)
+    //         dispatch(setloginSignupVar({
+    //             isUserHasToken: loginResult.data.results?.token,
+    //         }))
+    //         dispatch(setloginSignupVar({
+    //             isUserHasToken: loginResult.data.results?.token,
+    //         }))
+    //         navigate("/")
+    //     }
+    // }, [isSuccess, isLoginFetching])
 
     return (
         <div className="text-gray-600 body-font w-full select-none">
@@ -120,35 +114,35 @@ const SignUp = () => {
                                             <h4 className="font-bold text-white text-center">Sign Up</h4>
                                         </div>
                                         <div className="flex-auto p-6">
-                                            <form role="form">
+                                            <form>
                                                 <div className="mb-4">
-                                                    <div className="relative flex items-center text-gray-400 focus-within:text-yellow-300">
+                                                    <div className="relative flex items-center text-gray-400 focus-within:text-themeColor">
                                                         <span className="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
                                                             <i className='fas fa-user w-4 fill-current'></i>
                                                         </span>
-                                                        <input id="chatqa__name" type="text" name="name" placeholder="Name" onChange={(e: any) => onHandleChange(e)} className="w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
+                                                        <input id="chatqa__name" type="text" name="name" placeholder="Name" onChange={(e: any) => onHandleChange(e)} className="input w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
                                                     </div>
                                                     {
                                                         errorMessages?.name && <Error message={errorMessages?.name} />
                                                     }
                                                 </div>
                                                 <div className="mb-4">
-                                                    <div className="relative flex items-center text-gray-400 focus-within:text-yellow-300">
+                                                    <div className="relative flex items-center text-gray-400 focus-within:text-themeColor">
                                                         <span className="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
                                                             <i className='fas fa-envelope w-4 fill-current'></i>
                                                         </span>
-                                                        <input id="chatqa__email" type="email" name="email" placeholder="Email" onChange={(e: any) => onHandleChange(e)} className="w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
+                                                        <input id="chatqa__email" type="email" name="email" placeholder="Email" onChange={(e: any) => onHandleChange(e)} className="input w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
                                                     </div>
                                                     {
                                                         errorMessages?.email && <Error message={errorMessages?.email} />
                                                     }
                                                 </div>
                                                 <div className="mb-4">
-                                                    <div className="relative flex items-center text-gray-400 focus-within:text-yellow-300">
+                                                    <div className="relative flex items-center text-gray-400 focus-within:text-themeColor">
                                                         <span className="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
                                                             <i className='fas fa-key w-4 fill-current'></i>
                                                         </span>
-                                                        <input id="chatqa__password" type={`${showPassword ? "text" : "password"}`} name="password" placeholder="Password" onChange={(e: any) => onHandleChange(e)} className="w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
+                                                        <input id="chatqa__password" type={`${showPassword ? "text" : "password"}`} name="password" placeholder="Password" onChange={(e: any) => onHandleChange(e)} className="input w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
                                                         <span className="absolute right-4 h-6 flex items-center cursor-pointer">
                                                             <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"} w-4 fill-current`} onClick={() => {
                                                                 setShowPassword(!showPassword)
@@ -160,11 +154,11 @@ const SignUp = () => {
                                                     }
                                                 </div>
                                                 <div className="mb-4">
-                                                    <div className="relative flex items-center text-gray-400 focus-within:text-yellow-300">
+                                                    <div className="relative flex items-center text-gray-400 focus-within:text-themeColor">
                                                         <span className="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
                                                             <i className='fas fa-key w-4 fill-current'></i>
                                                         </span>
-                                                        <input id="chatqa__confirmpassword" type={`${showConfirmPassword ? "text" : "password"}`} name="confirmPassword" placeholder="Confirm Password" onChange={(e: any) => onHandleChange(e)} className="w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
+                                                        <input id="chatqa__confirmpassword" type={`${showConfirmPassword ? "text" : "password"}`} name="confirmPassword" placeholder="Confirm Password" onChange={(e: any) => onHandleChange(e)} className="input w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
                                                         <span className="absolute right-4 h-6 flex items-center cursor-pointer">
                                                             <i className={`fas ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"} w-4 fill-current`} onClick={() => {
                                                                 setShowConfirmPassword(!showConfirmPassword)
@@ -176,10 +170,10 @@ const SignUp = () => {
                                                     }
                                                 </div>
                                                 <div className="text-center">
-                                                    <button id="chatqa__signIn" type="button" className="inline-block w-full px-16 py-2 my-3 font-bold leading-normal text-center text-black align-middle transition-all bg-white border-2 border-white rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 hover:bg-black hover:text-white hover:border-white" onClick={(e) => handleSubmit(e)}>Sign Up</button>
+                                                    <button id="chatqa__signIn" type="button" className="btn self-start w-full mx-auto mt-0 text-base font-bold text-black border-0 fold-bold lg:mx-0 flex items-center hover:text-white bg-themeColor" onClick={(e) => handleSubmit(e)}>Sign Up</button>
                                                 </div>
                                                 <div className="flex items-center mb-0.5 text-left min-h-6">
-                                                    <label className="font-normal select-none text-sm text-white " htmlFor="forgot">Already have an account ? <span className="text-yellow-300 cursor-pointer font-bold underline"
+                                                    <label className="font-normal select-none text-sm text-white " htmlFor="forgot">Already have an account ? <span className="text-themeColor cursor-pointer font-bold underline"
                                                         onClick={() => {
                                                             navigate('/login')
                                                         }}> Sign In</span></label>

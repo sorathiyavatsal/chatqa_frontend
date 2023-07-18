@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getUserDetailFromLocalSorage, getUserTokenInLocalSorage } from '../utils/localStorage'
+import { getUserDetailFromLocalStorage, getUserTokenInLocalStorage } from '../utils/localStorage'
 const initialState = {
 
     // form start
@@ -15,9 +15,9 @@ const initialState = {
      // variables
      loginSignupVar: {
         isShowAccountVerifyMessage: false,
-        isUserHasToken: getUserTokenInLocalSorage(),
+        isUserHasToken: getUserTokenInLocalStorage(),
         isShowPasswordResetMessage: false,
-        userLocalData: getUserDetailFromLocalSorage()
+        userLocalData: getUserDetailFromLocalStorage()
     },
 }
 

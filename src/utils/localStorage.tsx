@@ -1,31 +1,37 @@
 import Cookies from 'universal-cookie';
 
-export const setUserTokenInLocalSorage = (data:any) => {
+export const setUserTokenInLocalStorage = (data: any) => {
     localStorage.setItem('chatQa_token', data.access_token)
     localStorage.setItem('chatQa_rtoken', data.refresh_token)
 }
 
-export const setUserDetailInLocalSorage = (data:any) => {
+export const setUserDetailInLocalStorage = (data: any) => {
     const cookies = new Cookies();
     localStorage.setItem('chatQa_token', data.access_token)
     localStorage.setItem('chatQa_rtoken', data.refresh_token)
     localStorage.setItem('chatQa_user', JSON.stringify(data));
-    cookies.set('_ata', data?.access_token, { path: '/' });
+    var token = data?.access_token;
+    var length = token?.length;
+    var trimmedString = token?.substring(7, length);
+    cookies.set('_ata', trimmedString);
+    var point = data?.points
+    cookies.set('_points', point)
 }
-export const getUserDetailFromLocalSorage = () => {
-    let getData:any = localStorage.getItem('chatQa_user')
-    const localUserDetail = JSON.parse(getData)
+export const getUserDetailFromLocalStorage = () => {
+    let getData: any = localStorage.getItem('chatQa_user')
+    const localUserDetail = JSON.parse(getData);
     return localUserDetail
 }
 
-export const getUserTokenInLocalSorage = () => {
-    let getData:any = localStorage.getItem('chatQa_token')
+export const getUserTokenInLocalStorage = () => {
+    let getData: any = localStorage.getItem('chatQa_token')
     return getData
 }
 
-export const getUserRefreshTokenInLocalSorage = () => {
-    let getData:any = localStorage.getItem('chatQa_rtoken')
+export const getUserRefreshTokenInLocalStorage = () => {
+    let getData: any = localStorage.getItem('chatQa_rtoken')
     return getData
 }
-
-
+export const setUserInLocalStorage = (data: any) => {
+    localStorage.setItem('chatQa_user', JSON.stringify(data));
+}

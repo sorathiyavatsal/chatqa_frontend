@@ -1,7 +1,7 @@
 // import axios from "../../config/api";
 import { useEffect, useState } from "react";
 import { setErrorMessage } from '../../redux/globalSlice'
-import { setUserDetailInLocalSorage } from '../../utils/localStorage'
+import { setUserDetailInLocalStorage } from '../../utils/localStorage'
 import { useLazyLoginQuery } from '../../servicesRtkQuery/publicApi'
 import { useDispatch, useSelector } from "react-redux";
 import { loginValidation } from '../../utils/validation';
@@ -9,8 +9,7 @@ import { setloginSignupVar } from '../../redux/loginSignupSlice';
 import Error from "../../components/error";
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2";
-import Header from "../../components/header";
-
+import { setUser } from "../../redux/UserDetailsSlice";
 interface LoginData {
     email: string;
     password: string;
@@ -69,16 +68,17 @@ const Login = () => {
             })
         }
         if (isSuccess && !isFetching) {
-            setUserDetailInLocalSorage(result.data.data)
+            setUserDetailInLocalStorage(result.data.data)
             dispatch(setloginSignupVar({
                 isUserHasToken: result.data.results?.token,
             }))
             dispatch(setloginSignupVar({
                 isUserHasToken: result.data.results?.token,
             }))
+            dispatch(setUser(result.data.data))
             window.location.href = "/dashboard"
         }
-    }, [isSuccess, isFetching])
+    }, [isSuccess, isFetching, dispatch,  error?.data?.message, isError, result])
 
     return (
         <div className="text-gray-600 body-font w-full select-none">
@@ -101,24 +101,24 @@ const Login = () => {
                                             <h4 className="font-bold text-white text-center">Log In</h4>
                                         </div>
                                         <div className="flex-auto p-6">
-                                            <form role="form">
+                                            <form>
                                                 <div className="mb-4">
-                                                    <div className="relative flex items-center text-gray-400 focus-within:text-yellow-300">
+                                                    <div className="relative flex items-center text-gray-400 focus-within:text-themeColor">
                                                         <span className="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
                                                             <i className='fas fa-envelope w-4 fill-current'></i>
                                                         </span>
-                                                        <input id="chatqa__email" type="email" name="email" placeholder="Email" onChange={(e: any) => onHandleChange(e)} className="w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
+                                                        <input id="chatqa__email" type="email" name="email" placeholder="Email" onChange={(e: any) => onHandleChange(e)} className="w-full input pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
                                                     </div>
                                                     {
                                                         errorMessages?.email && <Error message={errorMessages?.email} />
                                                     }
                                                 </div>
                                                 <div className="mb-4">
-                                                    <div className="relative flex items-center text-gray-400 focus-within:text-yellow-300">
+                                                    <div className="relative flex items-center text-gray-400 focus-within:text-themeColor">
                                                         <span className="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
                                                             <i className='fas fa-key w-4 fill-current'></i>
                                                         </span>
-                                                        <input id="chatqa__password" type={`${showPassword ? "text" : "password"}`} name="password" placeholder="Password" onChange={(e: any) => onHandleChange(e)} className="w-full pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
+                                                        <input id="chatqa__password" type={`${showPassword ? "text" : "password"}`} name="password" placeholder="Password" onChange={(e: any) => onHandleChange(e)} className="w-full input pl-14 pr-4 py-3 rounded-md text-sm text-gray-600 outline-none border-none transition shadow-black" />
                                                         <span className="absolute right-4 h-6 flex items-center cursor-pointer">
                                                             <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"} w-4 fill-current`} onClick={() => {
                                                                 setShowPassword(!showPassword)
@@ -133,10 +133,14 @@ const Login = () => {
                                                     <label className="font-normal cursor-pointer select-none text-sm text-white hover:text-gray-500" htmlFor="forgot">Forgot Password ?</label>
                                                 </div>
                                                 <div className="text-center">
-                                                    <button id="chatqa__signIn" type="button" className="inline-block w-full px-16 py-2 my-3 font-bold leading-normal text-center text-black align-middle transition-all bg-white border-2 border-white rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 hover:bg-black hover:text-white hover:border-white" onClick={(e) => handleSubmit(e)}>Sign In</button>
+                                                    <button type="button" onClick={(e: any) => {
+                                                        handleSubmit(e)
+                                                    }} className="btn self-start w-full mx-auto mt-0 text-base font-bold text-black border-0 fold-bold lg:mx-0 flex items-center hover:text-white bg-themeColor">
+                                                        <div>Sign In</div>
+                                                    </button>
                                                 </div>
                                                 <div className="flex items-center mb-0.5 text-left min-h-6">
-                                                    <label className="font-normal select-none text-sm text-white " htmlFor="forgot">Don't have an account ? <span className="text-yellow-300 cursor-pointer font-bold underline"
+                                                    <label className="font-normal select-none text-sm text-white " htmlFor="forgot">Don't have an account ? <span className="text-themeColor cursor-pointer font-bold underline"
                                                         onClick={() => {
                                                             navigate('/signup')
                                                         }}> Sign Up</span></label>

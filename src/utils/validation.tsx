@@ -5,6 +5,7 @@ const checkEmail = (email: string) => {
         }
     }
     else {
+        // eslint-disable-next-line no-useless-escape
         const EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         const emailFormat = EmailRegex.test(email);
         if (!emailFormat) {
@@ -106,7 +107,7 @@ export const UserValidation = (data: any) => {
         }
     }
 
-    if (data.password != data.confirmPassword) {
+    if (data.password !== data.confirmPassword) {
         return {
             cPassword: "Password doesn't Match"
         }
